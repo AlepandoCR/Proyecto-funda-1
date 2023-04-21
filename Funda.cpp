@@ -1,8 +1,7 @@
 #include <iostream>
-#include <cstdlib>
-#include <stdlib.h>
-#include <ctime>
-#include <windows.h>
+#include <cstdlib> // system, random, etc..
+#include <ctime> //tiempo (utilizado para el valor random)
+#include <windows.h> //sleep
 
 using namespace std;
 
