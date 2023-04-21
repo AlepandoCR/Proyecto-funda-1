@@ -1,131 +1,139 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 #include <windows.h>
 
 using namespace std;
 
-int acumulado(int acu,int i,bool salioacu)
+int acumulado(int Acumulado,int i,bool salioacu)
 {
 	//Suma del acumulado
+	//Si "i" es menor a 10 y mayor a 0 y no ha salido el acumulado, entonces suma 20000000 al valor del acumulado
 	if (i < 10 && i > 0 && !salioacu)
 	{
-		acu = acu + 20000000;
+		Acumulado = Acumulado + 20000000;
 	}
 	else if (i < 20 && i + 1 > 10 && !salioacu) {
-		acu = acu + 30000000;
+		Acumulado = Acumulado + 30000000;
 	}
-	return acu;
+	return Acumulado;
 }
 //Generar un numero random para elegir el premio
-int GenPremios(int acudis, int d, int dd, int ds, int ddd, int dos, int u, int acu)
+int GenPremios(int acudis, int disponibilidadDelPremioUno, int disponibilidadDelPremioDos, int disponibilidadDelPremioTres, int disponibilidadDelPremioCuatro, int disponibilidadDelPremioCinco, int disponibilidadDelPremioSeis, int Acumulado)
 {
 	int premio,Nrandom;
-	srand(time(NULL));
+	srand(time(nullptr)); //random sea aleatorio
+	//este bucle no parará hasta que alguno de estos if se cumple
 	while(true)
 	{
 		Nrandom = rand() % 51;
-		if(Nrandom <= 9 && d > 0)
+		//Si Nrandom es menor o igual a 9 y la disponibilidad es mayor que 0 entonces el premio será de 2 millones
+		if(Nrandom <= 9 && disponibilidadDelPremioUno > 0)
 		{
-			d--;
+			disponibilidadDelPremioUno--;
 			premio = 2000000;
 			return premio;
-		}else if(Nrandom <= 19 && dd > 0)
+		}else if(Nrandom <= 19 && disponibilidadDelPremioDos > 0)
 		{
-			dd--;
+			disponibilidadDelPremioDos--;
 			premio = 2500000;
 			return premio;
-		}else if(Nrandom <= 35 && ds > 0)
+		}else if(Nrandom <= 35 && disponibilidadDelPremioTres > 0)
 		{
-			ds--;
+			disponibilidadDelPremioTres--;
 			premio = 3000000;
 			return premio;
-		}else if(Nrandom <= 45 && ddd > 0)
+		}else if(Nrandom <= 45 && disponibilidadDelPremioCuatro > 0)
 		{
-			ddd--;
+			disponibilidadDelPremioCuatro--;
 			premio = 5000000;
 			return premio;
-		}else if(Nrandom <= 47 && dos > 0)
+		}else if(Nrandom <= 47 && disponibilidadDelPremioCinco > 0)
 		{
-			dos--;
+			disponibilidadDelPremioCinco--;
 			premio = 10000000;
 			return premio;
-		}else if(Nrandom == 48 && u > 0)
+		}else if(Nrandom == 48 && disponibilidadDelPremioSeis > 0)
 		{
-			u--;
+			disponibilidadDelPremioSeis--;
 			premio = 15000000;
 			return premio;
 		}else if(Nrandom == 49 && acudis == 1)
 		{
 			acudis--;
-			premio = acu;
+			premio = Acumulado;
 			return premio;
 		}else if(Nrandom > 48 && Nrandom < 50 && acudis == 2)
 		{
 			acudis--;
-			premio = acu;
+			premio = Acumulado;
 			return premio;
 		}
 	}
 }
 int main()
 {
-	//Seed del generador random
-	srand(time(NULL));
-	int Acumulado = 100000000, acudis = 1, d = 10, dd = 10, ds = 16, ddd = 10, dos = 2, u = 1,acudiv,premioElegido,numeroG, numeroGExtra, serieG, serieGExtra;
+	//Seed del generador random con la libreria de tiempo
+	srand(time(nullptr));
+	//Declaramos todas las variables de tipo Int (Todos los enteros)
+	int Acumulado = 100000000, acudis = 1, disponibilidadDelPremioUno = 10, disponibilidadDelPremioDos = 10, disponibilidadDelPremioTres = 16, disponibilidadDelPremioCuatro = 10, disponibilidadDelPremioCinco = 2, disponibilidadDelPremioSeis = 1,acudiv,premioElegido,numeroG, numeroGExtra, serieG, serieGExtra;
+	//Declaramos todlas las variables de tipo bool (son verdaderas o falsas)
 	bool salioAcu = false,bolitaB = false,SorteoExtra = false;
+	//Comienza todo le programa dentro de un bucle "for" que va del 0 al 49
 	for (int i = 0; i <= 49; i++)
 	{
+		//Si hay sorteo extra, el bucle termina en 49
 		if(i == 49 && SorteoExtra)
 		{
-			break;
+			break; //break termina el bucle
 		}
+		//Si "i" es mayor o igual a 11 y no ha salido el acumulado y no hay bolita extra, entonces, añade una bolita del acumulado
 		if(i >= 11 && !salioAcu && !bolitaB)
 		{
-			system("CLS");
+			system("CLS"); //se necesita una libreria llamada <stdlib.h>
 			acudis++;
 			bolitaB = true;
 			cout << "				Una nueva bolita de acumulado ha sido agregada!"<<endl;
-			Sleep(3000);
+			Sleep(3000); //Espera 3 segundos
 			system("ClS");
-		}else if(i >= 20 && !salioAcu && !SorteoExtra)
+		}else if(i >= 20 && !salioAcu && !SorteoExtra) //si i es mayor o igual a 20 y no ha salido el acumulado y no hay sorteo extra
 		{
 			system("CLS");
 			acudis = 0;
 			SorteoExtra = true;
 			acudiv = Acumulado / 60;
 			cout << "		El acumulado no salio, por lo tanto el premio se dividira en 60 partes iguales al final del sorteo";
-			Sleep(5000);
+			Sleep(5000); //Espera 5s
 			system("CLS");
 		}
 		
-		Acumulado = acumulado(Acumulado, i,salioAcu);
+		Acumulado = acumulado(Acumulado, i, salioAcu);
 		system("CLS");
 		//Sorteo de Numeros y Series
 		numeroG = rand() % 100;
 		serieG = rand() % 1000;
-		premioElegido = GenPremios(acudis,d,dd,ds,ddd,dos,u,Acumulado);
+		premioElegido = GenPremios(acudis,disponibilidadDelPremioUno,disponibilidadDelPremioDos,disponibilidadDelPremioTres,disponibilidadDelPremioCuatro,disponibilidadDelPremioCinco,disponibilidadDelPremioSeis,Acumulado);
 		//Cada vez que salga un premio, disminuye la cantidad de veces que este esta disponible
 		switch (premioElegido)
 		{
 		case 2000000:
-			d--;
+			disponibilidadDelPremioUno--;
 			break;
 		case 2500000:
-			dd--;
+			disponibilidadDelPremioDos--;
 			break;
 		case 3000000:
-			ds--;
+			disponibilidadDelPremioTres--;
 			break;
 		case 5000000:
-			ddd--;
+			disponibilidadDelPremioCuatro--;
 			break;
 		case 10000000:
-			dos--;
+			disponibilidadDelPremioCinco--;
 			break;
 		case 15000000:
-			u--;
+			disponibilidadDelPremioSeis--;
 			break;
 		default:
 			break;
@@ -146,17 +154,17 @@ int main()
 		cout << "				-------------------------------------------------";
 		cout << endl << "				|   Premios	  	|   	     Restantes  |"<<endl;
 		cout << "				-------------------------------------------------"<<endl;
-		cout << "				|   2000000             |                " << d << "	|" << endl;
+		cout << "				|   2000000             |                " << disponibilidadDelPremioUno << "	|" << endl;
 		cout << "				-------------------------------------------------"<<endl;
-		cout << "				|   2500000             |                " << dd << "	|" << endl;
+		cout << "				|   2500000             |                " << disponibilidadDelPremioDos << "	|" << endl;
 		cout << "				-------------------------------------------------" << endl;
-		cout << "				|   3000000             |                " << ds << "	|" << endl;
+		cout << "				|   3000000             |                " << disponibilidadDelPremioTres << "	|" << endl;
 		cout << "				-------------------------------------------------" << endl;
-		cout << "				|   5000000             |                " << ddd << "	|" << endl;
+		cout << "				|   5000000             |                " << disponibilidadDelPremioCuatro << "	|" << endl;
 		cout << "				-------------------------------------------------" << endl;
-		cout << "				|   10000000            |                " << dos << "	|" << endl;
+		cout << "				|   10000000            |                " << disponibilidadDelPremioCinco << "	|" << endl;
 		cout << "				-------------------------------------------------" << endl;
-		cout << "				|   15000000            |                " << u << "	|" << endl;
+		cout << "				|   15000000            |                " << disponibilidadDelPremioSeis << "	|" << endl;
 		cout << "				-------------------------------------------------" << endl;
 		cout << "				|   Acumulado           |                " << acudis << "	|" << endl;
 		cout << "				-------------------------------------------------"<<endl<<endl;
@@ -165,7 +173,7 @@ int main()
 			cout << "	    -#-#-#-#-#-#-#-#-#-#-#- Valor del acumulado: " << Acumulado << " de Colones -#-#-#-#-#-#-#-#-#-#-#-" << endl << endl;
 		}
 		system("pause");
-		Sleep(1231.120201001);
+		Sleep(1231.120201001); 
 	}
 	Sleep(2000);
 	if (SorteoExtra)
