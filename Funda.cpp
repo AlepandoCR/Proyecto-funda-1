@@ -4,18 +4,8 @@
 #include <windows.h> //Sleep
 
 
-
-
-//Tareas Pendientes
-//Invertir la tabla de los premios
-//Revisar la funcion del acumulado acorde con lo que dicen las indicaciones
-//Replantear los premios extra acorde a como se presenta en las indicaciónes
-//Revisar los momentos en los que se sacan bolitas de la tombola
-
-
-
 using namespace std;
-int actualizaAcumulado(int& Acumulado, int i, bool& salioAcu, int& acudis, int& disponibilidadDelPremioUno, int& disponibilidadDelPremioDos, int& disponibilidadDelPremioTres, int& disponibilidadDelPremioCuatro, int& disponibilidadDelPremioCinco, int& disponibilidadDelPremioSeis, int& premioElegido, double& premioSimplificado, int& premiosExtra, bool& bolitaB, bool noSumarAcumulado,int& premioElegidoDos)
+int actualizaAcumulado(int& Acumulado, int i, bool& salioAcu, int& acudis, int& disponibilidadDelPremioUno, int& disponibilidadDelPremioDos, int& disponibilidadDelPremioTres, int& disponibilidadDelPremioCuatro, int& disponibilidadDelPremioCinco, int& disponibilidadDelPremioSeis, int& premioElegido, double& premioSimplificado, int& premiosExtra, bool& bolitaB, bool noSumarAcumulado,int& premioElegidoDos,double&premioSimplificadoDos)
 {
 	//Suma del acumulado
 	//Si "i" es menor a 10 y mayor a 0 y no ha salido el acumulado, entonces suma 20000000 al valor del acumulado
@@ -64,7 +54,7 @@ int actualizaAcumulado(int& Acumulado, int i, bool& salioAcu, int& acudis, int& 
 			break;
 		case 2500000:
 			disponibilidadDelPremioDos--;
-			premioSimplificado = 2.5;
+			premioSimplificadoDos = 2.5;
 			break;
 		case 3000000:
 			disponibilidadDelPremioTres--;
@@ -151,21 +141,23 @@ void reiniciar(int& Acumulado, int& acudis, int& disponibilidadDelPremioUno, int
 	i = -1;
 	salioAcu = false;
 	bolitaB = false;
-
+	
 }
 int main()
 {
+	system("color 70");
 	//Seed del generador random con la libreria de tiempo
 	srand(time(nullptr));
 	//Declaramos todas las variables de tipo Int (Todos los enteros)
-	int Acumulado = 100000000, acudis = 1, disponibilidadDelPremioUno = 10, disponibilidadDelPremioDos = 10, disponibilidadDelPremioTres = 16, disponibilidadDelPremioCuatro = 10, disponibilidadDelPremioCinco = 2, disponibilidadDelPremioSeis = 1, premioElegido, numeroG, serieG, Continuar, proximoAcumulado, premiosExtra,NuSorteo = 1000,premioElegidoDos = 0,premioSimplificadoDos = 0;
+	int Acumulado = 100000000, acudis = 1, disponibilidadDelPremioUno = 10, disponibilidadDelPremioDos = 10, disponibilidadDelPremioTres = 16, disponibilidadDelPremioCuatro = 10, disponibilidadDelPremioCinco = 2, disponibilidadDelPremioSeis = 1, premioElegido, numeroG, serieG, Continuar, proximoAcumulado, premiosExtra,NuSorteo = 1000,premioElegidoDos = 0;
 	//Declaramos todlas las variables de tipo bool (son verdaderas o falsas)
 	bool salioAcu = false, bolitaB = false, noSumarAcumulado = false;
 	//Utilizaremos esta variable para poder dividir el premio en 1 millon
-	double premioSimplificado;
+	double premioSimplificado = 0,premioSimplificadoDos = 0;
 	//Comienza todo le programa dentro de un bucle "for" que va del 0 al 49
 	for (int i = 0; i <= 49; i++)
 	{
+		noSumarAcumulado = false;
 		NuSorteo++;
 		if (i <= 9) {
 			proximoAcumulado = 20;
@@ -176,16 +168,16 @@ int main()
 		//Sorteo de Numeros y Series
 		numeroG = rand() % 100;
 		serieG = rand() % 1000;
+		Acumulado = actualizaAcumulado( Acumulado,i,  salioAcu, acudis,  disponibilidadDelPremioUno,  disponibilidadDelPremioDos, disponibilidadDelPremioTres,  disponibilidadDelPremioCuatro,disponibilidadDelPremioCinco,disponibilidadDelPremioSeis, premioElegido,premioSimplificado,  premiosExtra,bolitaB, noSumarAcumulado, premioElegidoDos,premioSimplificadoDos);
 		premioElegido = sorteePremios(acudis, disponibilidadDelPremioUno, disponibilidadDelPremioDos, disponibilidadDelPremioTres, disponibilidadDelPremioCuatro, disponibilidadDelPremioCinco, disponibilidadDelPremioSeis, Acumulado);
 		premioSimplificado = premioElegido / 1000000;
-		noSumarAcumulado = false;
-		Acumulado = actualizaAcumulado( Acumulado,i,  salioAcu, acudis,  disponibilidadDelPremioUno,  disponibilidadDelPremioDos, disponibilidadDelPremioTres,  disponibilidadDelPremioCuatro,disponibilidadDelPremioCinco,disponibilidadDelPremioSeis, premioElegido,premioSimplificado,  premiosExtra,bolitaB, noSumarAcumulado, premioElegidoDos);
+		noSumarAcumulado = true;
+		Acumulado = actualizaAcumulado( Acumulado,i,  salioAcu, acudis,  disponibilidadDelPremioUno,  disponibilidadDelPremioDos, disponibilidadDelPremioTres,  disponibilidadDelPremioCuatro,disponibilidadDelPremioCinco,disponibilidadDelPremioSeis, premioElegido,premioSimplificado,  premiosExtra,bolitaB, noSumarAcumulado, premioElegidoDos,premioSimplificadoDos);
 		Sleep(1231.120201001);
 		if(i >= 10){
-			noSumarAcumulado = true;
 			premioElegidoDos = sorteePremios(acudis, disponibilidadDelPremioUno, disponibilidadDelPremioDos, disponibilidadDelPremioTres, disponibilidadDelPremioCuatro, disponibilidadDelPremioCinco, disponibilidadDelPremioSeis, Acumulado);
 			premioSimplificadoDos = premioElegidoDos / 1000000;
-			Acumulado = actualizaAcumulado(Acumulado, i, salioAcu, acudis, disponibilidadDelPremioUno, disponibilidadDelPremioDos, disponibilidadDelPremioTres, disponibilidadDelPremioCuatro, disponibilidadDelPremioCinco, disponibilidadDelPremioSeis, premioElegido, premioSimplificado, premiosExtra, bolitaB, noSumarAcumulado, premioElegidoDos);
+			Acumulado = actualizaAcumulado(Acumulado, i, salioAcu, acudis, disponibilidadDelPremioUno, disponibilidadDelPremioDos, disponibilidadDelPremioTres, disponibilidadDelPremioCuatro, disponibilidadDelPremioCinco, disponibilidadDelPremioSeis, premioElegido, premioSimplificado, premiosExtra, bolitaB, noSumarAcumulado, premioElegidoDos,premioSimplificadoDos);
 		}
 		if (i >= 20 && !salioAcu) //si i es mayor o igual a 20 y no ha salido el acumulado y no hay sorteo extra
 		{
@@ -193,7 +185,7 @@ int main()
 			premioElegido = Acumulado / 60;
 		}
 		system("CLS");
-
+		
 		cout << "		        Sorteo #" << i + 1 << " del premio acumulado de la loteria nacional No." << NuSorteo << endl;
 		cout << "		*********************************************************************************" << endl;
 		cout << "		*		Monto Acumulado: " << Acumulado/1000000 << " millones de colones			*" << endl;
@@ -229,7 +221,7 @@ int main()
 		}
 		else {
 			cout << "Premio: " << (Acumulado/60)/1000000 << " Millones de colones" << endl;
-			for (int k = i; k <= 60; k++) {
+			for (int k = 1; k <= 60; k++) {
 				numeroG = rand() % 100;
 				serieG = rand() % 1000;
 				cout << "Ganador #" << k << ": Numero:" << numeroG << "    Serie:" << serieG <<endl;
@@ -239,8 +231,6 @@ int main()
 		if (premioElegido == Acumulado || premioElegidoDos == Acumulado)
 		{
 			reiniciar(Acumulado, acudis, disponibilidadDelPremioUno, disponibilidadDelPremioDos, disponibilidadDelPremioTres, disponibilidadDelPremioCuatro, disponibilidadDelPremioCinco, disponibilidadDelPremioSeis, i, salioAcu, bolitaB);
-			salioAcu = true;
-			acudis = 0;
 		}
 		cout << "Digite <1> Para continuar" << endl;
 		cout << "Digite <2> Para salir" << endl;
